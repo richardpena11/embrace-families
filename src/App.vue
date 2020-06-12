@@ -15,11 +15,11 @@
         :alt="logo.alt_text"
       />
       <span>{{ site.name }}</span>
+      <nav-menu
+        class="main-menu" 
+        name="main"
+      />
     </div>
-    <nav-menu
-      class="main-menu" 
-      name="main"
-    />
     <transition
       name="fade"
       mode="out-in"
@@ -101,7 +101,9 @@ export default {
 <style>
 
 .site-branding {
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  background: rgb(167, 167, 167);
   padding: 1rem 0;
   cursor: pointer
 }
@@ -111,7 +113,7 @@ export default {
   vertical-align: middle;
   height: 4.8rem;
   width: auto;
-  margin: 0 .4rem 0 0;
+  margin: 0 .4rem 0 .8rem;
 }
 
 .site-branding>span {
@@ -121,20 +123,11 @@ export default {
 }
 
 .main-menu {
-  position: sticky;
-  top: -1px;
-  z-index: 2;
+  width: 100%;
   display: flex;
   flex-flow: row wrap;
-  justify-content: flex-start;
-  background: #fff;
+  justify-content: flex-end;
   padding: 1rem 0;
-  border-top: 1px solid rgba(0,0,0,.05);
-  border-bottom: 1px solid rgba(0,0,0,.05);
-}
-
-.main-menu>a {
-  margin-right: 2%;
 }
 
 /* Vue transition classes
