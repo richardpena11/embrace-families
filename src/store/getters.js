@@ -1,5 +1,6 @@
 export default {
   menu: state => ({ name }) => {
+    console.log(state)
     return state.menus[name]
   },
   request: state => ({ type, params }) => {

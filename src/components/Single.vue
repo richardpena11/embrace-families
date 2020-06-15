@@ -1,17 +1,17 @@
 <template>
   <main>
-    <article v-if="post">
+    <article v-if="post" class="container">
       <header>
         <responsive-image
           v-if="post.featured_media"
           :media-id="post.featured_media"
           :sizes="'(max-width: 1200px) 100vw, 1200px'"
         />
-        <h1 v-html="post.title.rendered"></h1>
-        <post-meta :post="post" />
-        <post-taxonomies :post="post" />
+        <h1 class="single__title" v-html="post.title.rendered"></h1>
+        <!-- <post-meta class="meta" :post="post" /> -->
+        <!-- <post-taxonomies :post="post" /> -->
       </header>
-      <div v-html="post.content.rendered"></div>
+      <div  class="single__content" v-html="post.content.rendered"></div>
     </article>
   </main>
 </template>
@@ -59,3 +59,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .single__content{
+    text-align: justify;
+  }
+</style>

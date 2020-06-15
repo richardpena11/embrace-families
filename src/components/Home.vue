@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="container">
     <section v-if="posts.length">
       <post-item
         v-for="post in posts"
