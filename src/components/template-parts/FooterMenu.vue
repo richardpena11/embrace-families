@@ -1,11 +1,9 @@
 <template>
-  <nav>
-    
-    {{ menu }}
+  <nav class="footer__nav">
 
     <div
       class="item-menu"
-      v-for="item in menu"
+      v-for="item in menu.footer.children"
       :key="item.id"
     >
       <a
@@ -14,21 +12,17 @@
         :title="item.title"
         v-html="item.content"
       ></a>
-      
-      <div 
-        v-if="item.children.length > 0"
-        class="dropdown-menu"
-      >
-        <span >{{item.content}}</span>
-        <a
-          v-for="dropdownItem in item.children"
-          :key="dropdownItem.id"
-          :href="dropdownItem.url"
-          :target="dropdownItem.target"
-          :title="dropdownItem.title"
-          v-html="dropdownItem.content"
-        ></a>
-      </div>
+    </div>
+
+    <div
+      class="item-menu footer__extra"
+    >
+      <a
+        :href="menu.footer.extra.url"
+        :target="menu.footer.extra.target"
+        :title="menu.footer.extra.title"
+        v-html="menu.footer.extra.content"
+      ></a>
     </div>
   </nav>
 </template>
@@ -45,7 +39,8 @@ export default {
 
   data() {
     return {
-      site: this.$store.state.site
+      site: this.$store.state.site,
+      menu: [],
     }
   },
 
@@ -54,12 +49,25 @@ export default {
       if (this.site.logo) {
         return this.$store.getters.singleById({ type: 'media', id: this.site.logo })
       }
-    },
-
-    menu(){
-      return this.$store.getters.menu({ name: this.name })
     }
-  }
+  },
+
+  created(){
+    const oldMenu = this.$store.getters.menu({ name: this.name });
+
+    this.menu.nav = oldMenu.filter(el => el.content === 'Main')[0]
+    this.menu.footer = oldMenu.filter(el => el.content === 'Footer')[0]
+    this.menu.footer.extra = oldMenu.filter(el => el.title === 'footer-extra')[0]
+
+    this.menu.nav.children = oldMenu.filter(el => el.parent == this.menu.nav.id)
+    this.menu.footer.children = oldMenu.filter(el => el.parent == this.menu.footer.id)
+
+    for(const subitem of this.menu.nav.children){
+      subitem.children = oldMenu.filter(el => el.parent == subitem.id)
+    }
+
+    console.log(this.menu)
+  },
 }
 </script>
 
@@ -67,6 +75,15 @@ export default {
   nav{
     display: flex;
     top: 10rem;
+  }
+
+  .footer__nav{
+    display: flex;
+    flex-wrap: wrap;
+    width: 60%;
+    justify-content: space-around;
+    padding-right: 10rem;
+    margin: 0 auto;
   }
 
   .item-menu{
@@ -77,44 +94,15 @@ export default {
   .item-menu > a{
     height: 100%;
     padding: 0 1rem;
-    line-height: 6rem;
+    line-height: 4rem;
     color: #000;
     text-decoration: none;
   }
 
-  .dropdown-menu{
-    display: none;
-    z-index: 1000;
+  .footer__extra{
     position: absolute;
-    top: 6rem;
-    width: 15rem;
-    padding: 1rem 2rem;
-    background: #ccc;
-    transition: all 1s;
-    flex-direction: column;
-  }
-
-  .dropdown-menu > span{
-    font-size: 1.25rem;
-    padding: .5rem 0;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-
-  .dropdown-menu > a{
-    padding: .5rem 0;
-    color: #000;
-    text-decoration: none;
-  }
-
-  .item-menu:hover .dropdown-menu{
-    display: flex;
-  }
-
-  a[title="highlighted_button"]{
-    padding: 0 3rem;
-    margin-left: 2rem;
-    background: #777777;
+    right: 5rem;
+    margin-top: 1.5rem;
   }
   
 </style>

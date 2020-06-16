@@ -44,7 +44,7 @@
 
       <footer-menu
         class="footer-menu" 
-        name="footer"
+        name="main"
       />
     </footer>
 
@@ -182,6 +182,7 @@ body{
 }
 
 .footer{
+  display: flex;
   background: var(--secondary-color-bg);
   padding: 3rem 0;
 }

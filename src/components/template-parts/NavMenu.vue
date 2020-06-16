@@ -3,7 +3,7 @@
 
     <div
       class="item-menu"
-      v-for="item in menu"
+      v-for="item in menu.nav.children"
       :key="item.id"
     >
       <a
@@ -45,7 +45,7 @@
 
       <div
       class="nav-mobile__item"
-        v-for="item in menu"
+        v-for="item in menu.nav.children"
         :key="item.id"
       >
         <a
@@ -146,10 +146,14 @@ export default {
   created(){
     const oldMenu = this.$store.getters.menu({ name: this.name });
 
-    this.menu = oldMenu.filter(el => el.parent === '0')
+    this.menu.nav = oldMenu.filter(el => el.content === 'Main')[0]
+    this.menu.footer = oldMenu.filter(el => el.content === 'Footer')[0]
 
-    for (const item of this.menu){
-      item.children = oldMenu.filter(el => el.parent == item.id)
+    this.menu.nav.children = oldMenu.filter(el => el.parent == this.menu.nav.id)
+    this.menu.footer.children = oldMenu.filter(el => el.parent == this.menu.footer.id)
+
+    for(const subitem of this.menu.nav.children){
+      subitem.children = oldMenu.filter(el => el.parent == subitem.id)
     }
 
     this.getWindowWidth()
